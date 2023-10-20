@@ -33,12 +33,64 @@
   border-radius: 5px;
 }
 
+.slide-container {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right;
+  transition: opacity 0.5s linear;
+  border-radius: 5px;
+  display: none;
+}
+
+div.active-img {
+  display: block;
+}
+
 .side-img {
   width: 100%;
   height: 58.7%;
   object-fit: cover;
   transition: filter 0.5s linear;
   border-radius: 5px;
+  filter: grayscale(0.95) blur(0.5px);
+  background-size: cover;
+}
+
+.side-img img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: filter 0.5s linear;
+  border-radius: 5px;
+}
+
+.active-slide {
+  filter: none;
+}
+
+#slides-wrapper {
+  position: relative;
+}
+
+.slider-title {
+  position: absolute;
+  bottom: 90px;
+  right: 50px;
+  color: white;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.slider-text {
+  position: absolute;
+  right: 50px;
+  bottom: 25px;
+  max-width: 400px;
+  color: white;
+  font-size: 16px;
+  text-align: right;
+  line-height: 1.1;
 }
 
 .gray-scale {

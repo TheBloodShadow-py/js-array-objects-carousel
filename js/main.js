@@ -2,12 +2,13 @@
 
 const domArrowUp = document.getElementById("domArrowUp");
 const domArrowDown = document.getElementById("domArrowDown");
-const domSliderImg = document.querySelector(".slider-img");
+const domSliderWrapper = document.getElementById("slides-wrapper");
+const domAsideWrapper = document.getElementById("aside-container");
+
+let imgCurrentIndex = 0;
 
 let tempAside;
 let nextAside;
-
-document.onload = hiddenSpin();
 
 const imgArr = [
   {
@@ -37,112 +38,76 @@ const imgArr = [
   },
 ];
 
-domArrowDown.addEventListener("click", nextImg);
-domArrowUp.addEventListener("click", prevImg);
+//EVENTS
+domArrowDown.addEventListener("click", () => slideImgChanger("next"));
+domArrowUp.addEventListener("click", () => slideImgChanger("prev"));
 
-let isMoving = false;
+//GENERATE DOM ELEMENTS
+imgArr.forEach((tempImg, index) => {
+  const tempSliderImg = document.createElement("img");
+  const tempSliderTitle = document.createElement("h1");
+  const tempSliderText = document.createElement("p");
+  const tempContainer = document.createElement("div");
+  const tempAisdeImg = document.createElement("img");
+  const tempAisdeContainer = document.createElement("div");
+  //Slider
+  tempSliderTitle.textContent = tempImg.title;
+  tempSliderText.textContent = tempImg.text;
+  if (index === imgCurrentIndex) {
+    tempContainer.classList.add("active-img");
+    tempAisdeContainer.classList.add("active-slide");
+  }
+  tempSliderImg.src = tempImg.image;
+  tempContainer.classList.add("slide-container");
+  tempSliderImg.classList.add("slider-img");
+  tempSliderTitle.classList.add("slider-title");
+  tempSliderText.classList.add("slider-text");
+  tempContainer.append(tempSliderImg, tempSliderTitle, tempSliderText);
+  domSliderWrapper.appendChild(tempContainer);
 
-document.addEventListener("mousemove", () => {
-  isMoving = true;
+  //Aside
+  tempAisdeContainer.appendChild(tempAisdeImg);
+  tempAisdeContainer.classList.add("side-img");
+  tempAisdeImg.src = tempImg.image;
+  domAsideWrapper.appendChild(tempAisdeContainer);
 });
 
-setInterval(() => {
-  if (!isMoving) {
-    nextImg();
+//SELECT ALL ELEMENTS
+const slideElements = document.querySelectorAll(".slide-container");
+const asideElements = document.querySelectorAll(".side-img");
+
+//ELEMENTS SWITCHER
+function elementsSwitcher(type) {
+  if (type === "remove") {
+    slideElements[imgCurrentIndex].classList.remove("active-img");
+    asideElements[imgCurrentIndex].classList.remove("active-slide");
   } else {
-    isMoving = false;
+    slideElements[imgCurrentIndex].classList.add("active-img");
+    asideElements[imgCurrentIndex].classList.add("active-slide");
   }
-}, 2000);
+}
 
-function prevImg() {
-  const currentSrcImg = domSliderImg.src;
-  const currentPosition = searchPosition(imgArr, currentSrcImg);
-  domSliderImg.classList.add("fade-out");
-  setTimeout(() => {
-    if (currentPosition === 0) {
-      domSliderImg.src = imgArr[4];
+//CHANGE IMG WITH ARROWS
+function slideImgChanger(direction) {
+  clearInterval(autoImg);
+  elementsSwitcher("remove");
+  if (direction === "next") {
+    if (imgCurrentIndex === slideElements.length - 1) {
+      imgCurrentIndex = 0;
     } else {
-      domSliderImg.src = imgArr[currentPosition - 1];
+      imgCurrentIndex++;
     }
-    domSliderImg.classList.remove("fade-out");
-    domSliderImg.classList.add("fade-in");
-  }, 300);
-
-  if (currentPosition === 4) {
-    tempAside = document.querySelector(".side-img-0");
-    nextAside = document.querySelector(".side-img-4");
-  } else if (currentPosition === 3) {
-    tempAside = document.querySelector(".side-img-4");
-    nextAside = document.querySelector(".side-img-3");
-  } else if (currentPosition === 2) {
-    tempAside = document.querySelector(".side-img-3");
-    nextAside = document.querySelector(".side-img-2");
-  } else if (currentPosition === 1) {
-    tempAside = document.querySelector(".side-img-2");
-    nextAside = document.querySelector(".side-img-1");
-  } else if (currentPosition === 0) {
-    tempAside = document.querySelector(".side-img-1");
-    nextAside = document.querySelector(".side-img-0");
-  }
-  tempAside.classList.add("gray-scale");
-  nextAside.classList.remove("gray-scale");
-
-  domSliderImg.classList.remove("fade-in");
-
-  return;
-}
-
-function nextImg() {
-  const currentSrcImg = domSliderImg.src;
-  const currentPosition = searchPosition(imgArr, currentSrcImg);
-  domSliderImg.classList.add("fade-out");
-  setTimeout(() => {
-    if (currentPosition === 4) {
-      domSliderImg.src = imgArr[0];
+  } else if (direction === "prev") {
+    if (imgCurrentIndex === 0) {
+      imgCurrentIndex = 4;
     } else {
-      domSliderImg.src = imgArr[currentPosition + 1];
-    }
-    domSliderImg.classList.remove("fade-out");
-    domSliderImg.classList.add("fade-in");
-  }, 300);
-  if (currentPosition === 4) {
-    tempAside = document.querySelector(".side-img-0");
-    nextAside = document.querySelector(".side-img-1");
-  } else if (currentPosition === 0) {
-    tempAside = document.querySelector(".side-img-1");
-    nextAside = document.querySelector(".side-img-2");
-  } else if (currentPosition === 1) {
-    tempAside = document.querySelector(".side-img-2");
-    nextAside = document.querySelector(".side-img-3");
-  } else if (currentPosition === 2) {
-    tempAside = document.querySelector(".side-img-3");
-    nextAside = document.querySelector(".side-img-4");
-  } else if (currentPosition === 3) {
-    tempAside = document.querySelector(".side-img-4");
-    nextAside = document.querySelector(".side-img-0");
-  }
-  tempAside.classList.add("gray-scale");
-  nextAside.classList.remove("gray-scale");
-  domSliderImg.classList.remove("fade-in");
-  return;
-}
-
-function searchPosition(arr, src) {
-  for (let i = 0; i < arr.length; i++) {
-    if (src.endsWith(arr[i].image)) {
-      return i;
+      imgCurrentIndex--;
     }
   }
-  return console.log(`not found in this array: ${arr}`);
+  elementsSwitcher("add");
 }
 
-function hiddenSpin() {
-  setTimeout(() => {
-    const spinner = document.querySelector(".loader");
-    spinner.classList.remove("opacity-100");
-    spinner.classList.add("opacity-0");
-    setTimeout(() => {
-      spinner.classList.add("hidden");
-    }, 500);
-  }, 1500);
-}
+//AUTO CHANGE
+const autoImg = setInterval(() => {
+  slideImgChanger("next");
+}, 5000);

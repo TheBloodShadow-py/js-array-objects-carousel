@@ -15,14 +15,7 @@
     />
     <link rel="stylesheet" href="./css/main.css" />
   </head>
-  <div
-    class="loader absolute top-0 bottom-0 bg-slate-900 w-full h-full z-50 opacity-100 transition-opacity duration-500"
-  >
-    <div class="lds-ripple">
-      <div></div>
-      <div></div>
-    </div>
-  </div>
+
   <body class="overflow-hidden select-none">
     <main class="h-screen flex items-center justify-center">
       <div class="container my-0 mx-auto transition-all">
@@ -30,19 +23,12 @@
           <div class="grid place-items-center grid-cols-8 grid-rows-5 gap-1 w-full">
             <div class="col-span-6 row-span-5">
               <div class="flex">
-                <div class="aspect-video relative filter-box">
-                  <img class="slider-img" draggable="false" src="./img/01.webp" />
-                </div>
+                <div id="slides-wrapper" class="aspect-video relative filter-box"></div>
               </div>
             </div>
             <div class="col-span-2 row-span-5 col-start-7">
-              <div class="aspect-video relative filter-box flex flex-col h-100 gap-1">
+              <div id="aside-container" class="aspect-video relative filter-box flex flex-col h-100 gap-1">
                 <div class="icon-wrapper" id="domArrowUp"><i class="fa-solid fa-circle-up arrow-up text-xl"></i></div>
-                <img draggable="false" class="side-img-0 side-img object-[50%,25%]" src="./img/01.webp" />
-                <img draggable="false" class="side-img-1 side-img gray-scale object-[50%,35%]" src="./img/02.webp" />
-                <img draggable="false" class="side-img-2 side-img gray-scale" src="./img/03.webp" />
-                <img draggable="false" class="side-img-3 side-img gray-scale" src="./img/04.webp" />
-                <img draggable="false" class="side-img-4 side-img gray-scale" src="./img/05.webp" />
                 <div class="icon-wrapper" id="domArrowDown">
                   <i class="fa-solid fa-circle-down arrow-down text-xl"></i>
                 </div>
